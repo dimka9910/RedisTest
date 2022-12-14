@@ -1,0 +1,139 @@
+version: '3.5'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    environment:
+      REDIS_NODE_1: redis-node-1:6373
+      REDIS_NODE_2: redis-node-2:6374
+      REDIS_NODE_3: redis-node-3:6375
+      REDIS_NODE_4: redis-node-4:6376
+      REDIS_NODE_5: redis-node-5:6377
+      REDIS_NODE_6: redis-node-6:6378
+      redis-cluster: redis-cluster:6379
+    volumes:
+      - '.:/usr/src/app'
+      - nodemodules:/usr/local/app/node_modules
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.10
+    depends_on:
+      - redis-cluster
+  redis-cluster:
+    image: 'redis:6.0-alpine'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.30
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6
+  redis-node-1:
+    image: 'redis:6.0-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6373:6373'
+    volumes:
+      - redis-node-1-data:/var/lib/redis
+      - ./redis/node1.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.31
+  redis-node-2:
+    image: 'redis:6.0-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6374:6374'
+    volumes:
+      - redis-node-2-data:/var/lib/redis
+      - ./redis/node2.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.32
+  redis-node-3:
+    image: 'redis:6.0-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6375:6375'
+    volumes:
+      - redis-node-3-data:/var/lib/redis
+      - ./redis/node3.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.33
+  redis-node-4:
+    image: 'redis:6.0-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6376:6376'
+    volumes:
+      - redis-node-4-data:/var/lib/redis
+      - ./redis/node4.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.34
+  redis-node-5:
+    image: 'redis:6.0-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6377:6377'
+    volumes:
+      - redis-node-5-data:/var/lib/redis
+      - ./redis/node5.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.35
+  redis-node-6:
+    image: 'redis:6.0-alpine'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - '6378:6378'
+    volumes:
+      - redis-node-6-data:/var/lib/redis
+      - ./redis/node6.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      app_subnet:
+        ipv4_address: 172.20.0.36
+
+#  redis_commander:
+#    image: rediscommander/redis-commander:latest
+#    container_name: redis_web
+#    environment:
+#      REDIS_HOSTS: "local:redis-node-1:6373,local:redis-node-2:6374, local:redis-node-3:6375,local:redis-node-4:6376,local:redis-node-5:6377,local:redis-node-6:6378"
+#    ports:
+#      - "5000:8092"
+#    depends_on:
+#      - redis-node-1
+#      - redis-node-2
+#      - redis-node-3
+#      - redis-node-4
+#      - redis-node-5
+#      - redis-node-6
+#      - redis-cluster
+#    networks:
+#      app_subnet:
+#        ipv4_address: 172.20.0.29
+
+volumes:
+  redis-node-1-data:
+  redis-node-2-data:
+  redis-node-3-data:
+  redis-node-4-data:
+  redis-node-5-data:
+  redis-node-6-data:
+  nodemodules:
+networks:
+  app_subnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24

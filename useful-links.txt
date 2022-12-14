@@ -1,0 +1,14 @@
+https://github.com/avinash10584/spring-boot-redis-cluster
+
+https://www.vinsguru.com/redis-master-slave-with-spring-boot/
+
+https://bpaulino.com/entries/how-to-use-redis-cluster-for-caching
+
+https://pierreabreu.medium.com/building-redis-cluster-with-docker-compose-9569ddb6414a
+https://pierreabreu.medium.com/hi-peter-duck-b8fc2560625b
+
+
+https://support.huaweicloud.com/intl/en-us/usermanual-dcs/dcs-ug-211203001.html
+
+
+https://github.com/lettuce-io/lettuce-core/issues/672

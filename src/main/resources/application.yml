@@ -1,0 +1,17 @@
+server:
+  port: 3000
+
+spring:
+  redis:
+    cluster:
+      nodes:
+        - redis-node-1:6373
+        - redis-node-2:6374
+        - redis-node-3:6375
+        - redis-node-4:6376
+        - redis-node-5:6377
+        - redis-node-6:6378
+      max-redirects: 5
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
